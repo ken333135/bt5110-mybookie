@@ -1,5 +1,10 @@
 from flask import request, session, redirect, url_for, render_template, flash
 from datetime import date
+import pandas as pd
+import json
+import plotly
+import plotly.express as px
+import plotly.graph_objects as go
 
 from . models import Models
 from . forms import AddReaderForm, SignUpForm, SignInForm, SignUpFormAdmin, AddHolidayForm, AddBookingForm
@@ -319,6 +324,88 @@ def delete_booking(date, time_slot_des, facility_id):
         models.deleteBooking({"date": date, "time_slot_des": time_slot_des, "facility_id": facility_id})
         flash("Delete Success")
         return redirect(url_for('show_booking'))
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
+
+""" ANALYTICS """
+@app.route('/admin/analytics/1')
+@app.route('/admin/analytics/1/<startDate>/<endDate>')
+def analytics_1(startDate='2022-01-01', endDate='2022-11-06'):
+    try:
+
+        # data 1
+        data = models.getAnalytics1(startDate, endDate)
+        app.logger.info(data)
+        df = pd.DataFrame(data)
+        fig = px.bar(df, x='sports', y='booking_rate')
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # data 2
+        data2 = models.getAnalytics2(startDate, endDate)
+        df2 = pd.DataFrame(data2)
+        fig2 = px.bar(df2, x='sports', y='booking_rate')
+        graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # data 2
+        data3 = models.getAnalytics3(startDate, endDate)
+        df3 = pd.DataFrame(data3)
+        nonPeakDf = df3[['sports','non_peak_booking_rate']]
+        nonPeakDf.rename(columns = { 'non_peak_booking_rate': 'rate' }, inplace=True)
+        nonPeakDf['type'] = 'non_peak'
+
+        peakDf = df3[['sports','peak_booking_rate']]
+        peakDf.rename(columns = { 'peak_booking_rate': 'rate' }, inplace=True)
+        peakDf['type'] = 'peak'
+
+        df3 = pd.concat([nonPeakDf, peakDf])
+        fig3 = px.bar(df3, x='sports', y='rate', facet_col='type')
+
+        graphJSON3 = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return render_template('admin/analytics/1.html', graphJSON=graphJSON, graphJSON2=graphJSON2, graphJSON3=graphJSON3)
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
+
+@app.route('/admin/analytics/2')
+@app.route('/admin/analytics/2/<startDate>/<endDate>')
+def analytics_2(startDate='2022-01-01', endDate='2022-11-06'):
+    try:
+        data = models.getAnalytics4(startDate, endDate)
+        df = pd.DataFrame(data)
+        fig = px.bar(df, x='month_', y='profit', color='sports', barmode='group')
+
+        # fig.add_trace(
+        # go.Scatter(
+        #     x=df['month_'],
+        #     y=df['main_fee'],
+        #     color='sports'
+        # ))
+
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return render_template('admin/analytics/2.html', graphJSON=graphJSON)
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
+
+@app.route('/admin/analytics/3')
+@app.route('/admin/analytics/3/<startDate>/<endDate>')
+def analytics_2(startDate='2022-01-01', endDate='2022-11-06'):
+    try:
+        data = models.getAnalytics4(startDate, endDate)
+        df = pd.DataFrame(data)
+        fig = px.bar(df, x='month_', y='profit', color='sports', barmode='group')
+
+        # fig.add_trace(
+        # go.Scatter(
+        #     x=df['month_'],
+        #     y=df['main_fee'],
+        #     color='sports'
+        # ))
+
+        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+        return render_template('admin/analytics/2.html', graphJSON=graphJSON)
     except Exception as e:
         flash(str(e))
         return redirect(url_for('index'))
