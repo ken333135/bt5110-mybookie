@@ -241,6 +241,18 @@ def show_member():
         return redirect(url_for('index'))
     except Exception as e:
         flash(str(e))
+
+@app.route('/about')
+def about_member():
+    try:
+        if session['user_available']:
+            member = models.getMemberByEmail(session['current_user'])
+            return render_template('member/index.html', member=member)
+        flash('You are not a Authenticated User')
+        return redirect(url_for('about_member'))
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
         
 """ BOOKING """
 @app.route('/booking', methods=['GET'])
