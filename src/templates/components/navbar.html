@@ -1,0 +1,29 @@
+{% macro signin() -%}
+  <div class="row">
+    <div class="col-md-10"><h1>SURPRISE APP</h1></div>
+    <div class="col-md-2">
+        <ul class="nav nav-pills">
+          <li role="presentation" class="active"><a href="signup">Sign Up</a></li>
+          <li role="presentation" id="si"><a href="signin">Sign In</a></li>
+        </ul>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro signout() -%}
+  <div id="us">
+    <ul class="nav nav-pills">
+      <li><h3>{{ session['current_user']}} &nbsp</h3></li>
+      <li role="presentation" class="active" id="signout">
+        <a href="/logout">Sign Out</a>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <ul class="nav nav-tabs">
+      <li role="presentation"><a href="/booking">Bookings</a></li>
+      <li role="presentation"><a href="/booking/add">Add Booking</a></li>
+      <li role="presentation"><a href="/about_user">About</a></li>
+    </ul>
+  </div>
+{%- endmacro %}

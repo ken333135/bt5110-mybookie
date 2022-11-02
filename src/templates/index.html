@@ -15,16 +15,10 @@
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
   </head>
   <body>
-    <div class="row">
-    <div class="col-md-10"><h1>Simple Application</h1></div>
-    <div class="col-md-2">
-        <ul class="nav nav-pills">
-          <li role="presentation" class="active"><a href="signup">Sign Up</a></li>
-          <li role="presentation" id="si"><a href="signin">Sign In</a></li>
-        </ul>
-    </div>
 
-    </div>
+    {% import 'components/navbar.html' as navbar %}
+    {{navbar.signin()}}
+
     {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
