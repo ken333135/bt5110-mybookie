@@ -349,19 +349,15 @@ def analytics_2(startDate='2022-01-01', endDate='2022-11-06'):
         flash(str(e))
         return redirect(url_for('index'))
 
-# @app.route('/admin/analytics/3')
-# @app.route('/admin/analytics/3/<startDate>/<endDate>')
-# def analytics_3(startDate='2022-01-01', endDate='2022-11-06'):
-#     try:
-#         data = models.getAnalytics5(startDate, endDate)
-#         df = pd.DataFrame(data)
-#         fig = px.bar(df, x='month_', y='profit', color='sports', barmode='group')
-
-#         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-#         return render_template('admin/analytics/3.html', graphJSON=graphJSON)
-#     except Exception as e:
-#         flash(str(e))
-#         return redirect(url_for('index'))
+@app.route('/admin/analytics/3')
+@app.route('/admin/analytics/3/<sport>/<days>')
+def analytics_3(sport='Basketball', days=180):
+    try:
+        data = models.getAnalytics6(sport, days)
+        return render_template('admin/analytics/3.html', data=data)
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
 
 """ END NEW """
 
