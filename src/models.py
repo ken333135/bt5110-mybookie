@@ -38,6 +38,16 @@ class Models:
         count = self.executeRawSql("""SELECT COUNT(*) FROM member;""").mappings().all()
         return count[0].count
 
+    def alterTable(self):
+        return self.executeRawSql("""
+        ALTER TABLE member ALTER COLUMN first_name DROP NOT NULL;
+        ALTER TABLE member ALTER COLUMN last_name DROP NOT NULL;
+        ALTER TABLE member ALTER COLUMN gender DROP NOT NULL;
+        ALTER TABLE member ALTER COLUMN job_title DROP NOT NULL;
+        ALTER TABLE member ALTER COLUMN dob DROP NOT NULL;
+        ALTER TABLE member ALTER COLUMN phone_number DROP NOT NULL;
+        """)
+
     """ ADMIN """
     def addAdmin(self, value):
         return self.executeRawSql("""INSERT INTO admin (email, password) VALUES(:email, :password);""", value)
@@ -89,7 +99,8 @@ class Models:
     def getAllBookingByUser(self, email):
         values = self.executeRawSql("""SELECT * FROM booking WHERE email=:email ORDER BY date DESC, time_slot_des DESC;""", {"email": email}).mappings().all()
         if len(values) == 0:
-            raise Exception("Bookings {} does not exist".format(email))
+            return []
+            # raise Exception("Bookings {} does not exist".format(email))
         return values
 
     def getAllBookingsInNextTwoWeeks(self):
@@ -196,12 +207,12 @@ class Models:
     def createModels(self):
         self.executeRawSql(
             """CREATE TABLE IF NOT EXISTS member (
-                first_name VARCHAR(64) NOT NULL,
-                last_name VARCHAR(64) NOT NULL,
+                first_name VARCHAR(64),
+                last_name VARCHAR(64),
                 email VARCHAR(64) PRIMARY KEY,
-                gender VARCHAR(64) NOT NULL,
+                gender VARCHAR(64),
                 job_title VARCHAR(64),
-                dob DATE NOT NULL CHECK (current_date > dob),
+                dob DATE CHECK (current_date > dob),
                 phone_number VARCHAR(16),
                 password TEXT NOT NULL
             );

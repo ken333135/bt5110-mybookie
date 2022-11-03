@@ -228,10 +228,7 @@ def show_booking():
             bookings = models.getAllBookingByUser(user_email)
             today = date.today()
 
-            def test(value):
-                app.logger.info("HELLO WORLD FKKKK {}".format(value))
-
-            return render_template('booking/index.html', bookings=bookings, today=today, test=test)
+            return render_template('booking/index.html', bookings=bookings, today=today)
         flash('User is not Authenticated')
         return redirect(url_for('index'))
     except Exception as e:
@@ -274,7 +271,7 @@ def add_booking():
             return render_template('booking/add.html', booking=booking, bookings=bookings)
     except Exception as e:
         flash(str(e))
-        return redirect(url_for('add_booking'))
+        return redirect(url_for('show_booking'))
     flash('User is not Authenticated')
     return redirect(url_for('show_booking'))
 
