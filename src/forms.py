@@ -47,7 +47,14 @@ class AddBookingForm(Form):
     facility_id = SelectField('Facility  Id', coerce=str)
     submit = SubmitField('Add Booking')
 
-
-
+class UpdateMemberForm(Form):
+    first_name = StringField('First Name',validators=[ DataRequired()])
+    last_name = StringField('Last Name',validators=[ DataRequired()])
+    gender = SelectField('Email', choices=[('Male','Male'), ('Female','Female')])
+    job_title = StringField('Job Title',validators=[ DataRequired()])
+    dob = DateField('Date of Birth',validators=[ DataRequired()])
+    phone_number = StringField('Phone Number',validators=[ DataRequired()])
+    email = StringField('Email',validators=[ DataRequired()])
+    password = StringField('Password',validators=[ DataRequired()])
 
 """ END NEW """

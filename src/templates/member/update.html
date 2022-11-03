@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Update Readers</title>
+
+    <link
+      href="/../../static/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/../../static/bootstrap/css/bootstrap-theme.min.css"
+    />
+    <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css" />
+    <style type="text/css">
+      #us {
+        float: right;
+        margin-right: 20px;
+        margin-top: 10px;
+      }
+      #us h3 {
+        margin: 0 0 0 0;
+      }
+      .submitbt {
+        width: 100%;
+        height: 130%;
+        background-color: #337ab7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      table {
+        width: 30%;
+        height: 60%;
+        margin-top: 30px;
+      }
+      table tr td {
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+
+    {% import 'components/navbar.html' as navbar %}
+    {{navbar.signout()}}
+
+    <div>
+      <form action="" method="POST">
+        <table align="center">
+          <tr>
+            <td>
+              {{ member.first_name(class="form-control",placeholder="First Name") }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.last_name(class="form-control",placeholder="Last Name")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.gender(class="form-control",placeholder="Gender")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.job_title(class="form-control",placeholder="Job Title")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.dob(class="form-control",placeholder="DOB")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.phone_number(class="form-control",placeholder="Phone Number")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.email(class="form-control",placeholder="Email", readonly=true)
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {{ member.password(class="form-control",placeholder="Password")
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td align="center">
+              <input class="submitbt" type="submit" value="Post" />
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

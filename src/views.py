@@ -7,7 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 from . models import Models
-from . forms import AddReaderForm, SignUpForm, SignInForm, SignUpFormAdmin, AddHolidayForm, AddBookingForm
+from . forms import AddReaderForm, SignUpForm, SignInForm, SignUpFormAdmin, AddHolidayForm, AddBookingForm, UpdateMemberForm
 
 from src import app
 
@@ -146,8 +146,7 @@ def signin():
         if request.method == 'POST':
             em = signinform.email.data
             log = models.getMemberByEmail(em)
-            # if log.password == signinform.password.data:
-            if True:
+            if log.password == signinform.password.data:
                 session['current_user'] = em
                 session['user_available'] = True
                 return redirect(url_for('show_booking'))
@@ -258,6 +257,29 @@ def about_member():
     except Exception as e:
         flash(str(e))
         return redirect(url_for('index'))
+
+@app.route('/update', methods=['GET', 'POST'])
+def update_member():
+    try:
+        data = models.getMemberByEmail(session['current_user'])
+        member = UpdateMemberForm(request.form, obj=data)
+        if request.method == 'POST':
+            models.updateMember({
+                "first_name": member.first_name.data, 
+                "last_name": member.last_name.data, 
+                "gender": member.gender.data, 
+                "job_title": member.job_title.data, 
+                "dob": member.dob.data, 
+                "phone_number": member.phone_number.data, 
+                "email": member.email.data, 
+                "password": member.password.data, 
+            })
+            return redirect(url_for('about_member'))
+        return render_template('member/update.html', member=member)
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
+            
         
 """ BOOKING """
 @app.route('/booking', methods=['GET'])
@@ -389,26 +411,19 @@ def analytics_2(startDate='2022-01-01', endDate='2022-11-06'):
         flash(str(e))
         return redirect(url_for('index'))
 
-@app.route('/admin/analytics/3')
-@app.route('/admin/analytics/3/<startDate>/<endDate>')
-def analytics_2(startDate='2022-01-01', endDate='2022-11-06'):
-    try:
-        data = models.getAnalytics4(startDate, endDate)
-        df = pd.DataFrame(data)
-        fig = px.bar(df, x='month_', y='profit', color='sports', barmode='group')
+# @app.route('/admin/analytics/3')
+# @app.route('/admin/analytics/3/<startDate>/<endDate>')
+# def analytics_3(startDate='2022-01-01', endDate='2022-11-06'):
+#     try:
+#         data = models.getAnalytics5(startDate, endDate)
+#         df = pd.DataFrame(data)
+#         fig = px.bar(df, x='month_', y='profit', color='sports', barmode='group')
 
-        # fig.add_trace(
-        # go.Scatter(
-        #     x=df['month_'],
-        #     y=df['main_fee'],
-        #     color='sports'
-        # ))
-
-        graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template('admin/analytics/2.html', graphJSON=graphJSON)
-    except Exception as e:
-        flash(str(e))
-        return redirect(url_for('index'))
+#         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+#         return render_template('admin/analytics/3.html', graphJSON=graphJSON)
+#     except Exception as e:
+#         flash(str(e))
+#         return redirect(url_for('index'))
 
 """ END NEW """
 
