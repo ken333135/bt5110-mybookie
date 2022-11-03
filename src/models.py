@@ -4,6 +4,9 @@ import os
 
 class Models:
     def __init__(self):
+        uri = os.getenv("DATABASE_URL")  # or other relevant config var 
+        if uri.startswith("postgres://"):     
+            uri = uri.replace("postgres://", "postgresql://", 1)
         self.engine = create_engine(os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/bt5110'))
 
     def executeRawSql(self, statement, params={}):
