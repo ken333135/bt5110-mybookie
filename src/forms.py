@@ -32,14 +32,9 @@ class SignUpFormAdmin(Form):
     submit = SubmitField('Sign Up')
 
 class AddHolidayForm(Form):
-    date = DateField('Date', validators= [DataRequired()])
-    holiday = StringField('Type',validators=[ DataRequired()])
+    holiday_date = DateField('Date', validators= [DataRequired()])
+    holiday_des = StringField('Description',validators=[ DataRequired()])
     submit = SubmitField('Add Holiday')
-
-class AddCourtForm(Form):
-    type = StringField('Type',validators=[ DataRequired()])
-    number = IntegerField('Number', validators= [DataRequired()])
-    submit = SubmitField('Add Court')
 
 class AddBookingForm(Form):
     date = DateField('Date',validators=[ DataRequired()])

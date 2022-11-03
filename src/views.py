@@ -179,8 +179,8 @@ def add_holiday():
             holiday = AddHolidayForm(request.form)
             if request.method == 'POST':
                 models.addHoliday({
-                    "date": holiday.date.data,
-                    "holiday": holiday.holiday.data
+                    "holiday_date": holiday.holiday_date.data,
+                    "holiday_des": holiday.holiday_des.data
                 })
                 return redirect(url_for('show_holiday'))
             return render_template('admin/holiday/add.html', holiday=holiday)
