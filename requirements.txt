@@ -4,3 +4,4 @@ email_validator
 Flask-SQLAlchemy
 Flask_WTF
 plotly
+pandas
