@@ -38,6 +38,9 @@
       #signout a{
         padding: 2px 0px 2px 20px;
       }
+      td{
+        padding: 8px;
+      }
     </style>
   </head>
 <body>
@@ -53,14 +56,23 @@
     {% endif %}
   {% endwith %}
   <div class="ps">
-  <div><h3 class="panel-title"> sports | peak_fee | non_peak_fee </h3></div>
-  {% for i in booking_fees %}
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">{{i.sports}} | {{i.peak_fee}} | {{i.non_peak_fee}}</h3></div>
-    </div>
-  </div>
-  {% endfor %}
-  </div>    
+    <table>
+      <th>
+        <tr>
+          <td>sports</td>
+          <td>peak_fee</td>
+          <td>non_peak_fee</td>
+        </tr>
+      </th>
+      <tbody>
+        {% for i in booking_fees %}
+        <tr>
+          <td>{{i.sports}}</td>
+          <td>{{i.peak_fee}}</td>
+          <td>{{i.non_peak_fee}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 </body>
 </html>

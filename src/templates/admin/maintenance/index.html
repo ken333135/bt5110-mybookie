@@ -38,6 +38,9 @@
       #signout a{
         padding: 2px 0px 2px 20px;
       }
+      td{
+        padding: 8px;
+      }
     </style>
   </head>
 <body>
@@ -53,14 +56,26 @@
     {% endif %}
   {% endwith %}
   <div class="ps">
-  <div><h3 class="panel-title">sports | cleaning | electric_bill | equipment </h3></div>
-  {% for i in maintenances %}
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">{{i.sports}} | {{i.cleaning}} | {{i.electric_bill}} | {{i.equipment}} </h3></div>
-    </div>
-  </div>
-  {% endfor %}
+    <table>
+      <th>
+        <tr>
+          <td>sports</td>
+          <td>cleaning</td>
+          <td>electric_bill</td>
+          <td>equipment</td>
+        </tr>
+      </th>
+      <tbody>
+        {% for i in maintenances %}
+        <tr>
+          <td>{{i.sports}}</td>
+          <td>{{i.cleaning}}</td>
+          <td>{{i.electric_bill}}</td>
+          <td>{{i.equipment}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>    
 </body>
 </html>

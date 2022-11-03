@@ -38,6 +38,9 @@
       #signout a{
         padding: 2px 0px 2px 20px;
       }
+      td{
+        padding: 8px;
+      }
     </style>
   </head>
 <body>
@@ -53,13 +56,22 @@
     {% endif %}
   {% endwith %}
   <div class="ps">
-  {% for i in holidays %}
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">{{i.date}} - {{i.holiday}}</h3></div>
-    </div>
-  </div>
-  {% endfor %}
+    <table>
+      <th>
+        <tr>
+          <td>holiday_date</td>
+          <td>holiday_des</td>
+        </tr>
+      </th>
+      <tbody>
+        {% for i in holidays %}
+        <tr>
+          <td>{{i.holiday_date}}</td>
+          <td>{{i.holiday_des}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>    
 </body>
 </html>

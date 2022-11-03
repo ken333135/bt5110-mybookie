@@ -38,6 +38,9 @@
       #signout a{
         padding: 2px 0px 2px 20px;
       }
+      td{
+        padding: 8px;
+      }
     </style>
   </head>
 <body>
@@ -53,15 +56,34 @@
     {% endif %}
   {% endwith %}
   <div class="ps">
-  <div><h3 class="panel-title"> user_id | first_name | last_name | email | gender | job_title | dob | phone_number </h3></div>
-  {% for i in members %}
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">{{i.user_id}} | {{i.first_name}} | {{i.last_name}} | {{i.email}} | {{i.gender}} | 
-        {{i.job_title}} | {{i.dob}} | {{i.phone_number}}</h3></div>
-    </div>
-  </div>
-  {% endfor %}
+    <table>
+      <th>
+        <tr>
+          <td>user_id</td>
+          <td>first_name</td>
+          <td>last_name</td>
+          <td>email</td>
+          <td>gender</td>
+          <td>job_title</td>
+          <td>dob</td>
+          <td>phone_number</td>
+        </tr>
+      </th>
+      <tbody>
+        {% for i in members %}
+        <tr>
+          <td>{{i.user_id}}</td>
+          <td>{{i.first_name}}</td>
+          <td>{{i.last_name}}</td>
+          <td>{{i.email}}</td>
+          <td>{{i.gender}}</td>
+          <td>{{i.job_title}}</td>
+          <td>{{i.dob}}</td>
+          <td>{{i.phone_number}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>    
 </body>
 </html>

@@ -38,6 +38,9 @@
       #signout a{
         padding: 2px 0px 2px 20px;
       }
+      td{
+        padding: 8px;
+      }
     </style>
   </head>
 <body>
@@ -53,14 +56,26 @@
     {% endif %}
   {% endwith %}
   <div class="ps">
-    <div><h3 class="panel-title"> weekend | holiday | time_slot_des | peak </h3></div>
-  {% for i in fee_schedules %}
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      <div><h3 class="panel-title">{{i.weekend}} | {{i.holiday}} | {{i.time_slot_des}} | {{i.peak}} </h3></div>
-    </div>
-  </div>
-  {% endfor %}
+    <table>
+      <th>
+        <tr>
+          <td>weekend</td>
+          <td>holiday</td>
+          <td>time_slot_des</td>
+          <td>peak</td>
+        </tr>
+      </th>
+      <tbody>
+        {% for i in fee_schedules %}
+        <tr>
+          <td>{{i.weekend}}</td>
+          <td>{{i.holiday}}</td>
+          <td>{{i.time_slot_des}}</td>
+          <td>{{i.peak}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>   
    
 </body>

@@ -102,8 +102,11 @@ def signupadmin():
     try:
         signupformadmin = SignUpFormAdmin(request.form)
         if request.method == 'POST':
-            models.addAdmin({"email": signupformadmin.email.data, "password": signupformadmin.password.data, "secret": signupformadmin.secret.data})
-            return redirect(url_for('admin/signin'))
+            if signupformadmin.secret.data == 'mysecret':
+                models.addAdmin({"email": signupformadmin.email.data, "password": signupformadmin.password.data, "secret": signupformadmin.secret.data})
+                return redirect(url_for('admin/signin'))
+            else:
+                flash('Invalid Secret')
         return render_template('admin/signup.html', signupformadmin=signupformadmin)
     except Exception as e:
         flash(str(e))
@@ -119,7 +122,7 @@ def signinadmin():
             if log.password == signinform.password.data:
                 session['current_user'] = em
                 session['user_available'] = True
-                return redirect(url_for('show_books'))
+                return redirect(url_for('show_holiday'))
             else:
                 flash('Cannot sign in')
         return render_template('admin/signin.html', signinform=signinform)
