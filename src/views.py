@@ -298,13 +298,13 @@ def analytics_1(startDate='2022-01-01', endDate='2022-11-06'):
         data = models.getAnalytics1(startDate, endDate)
         app.logger.info(data)
         df = pd.DataFrame(data)
-        fig = px.bar(df, x='sports', y='booking_rate')
+        fig = px.bar(df, x='sports', y='booking_rate', text_auto=True, width=800, height=400, color='sports')
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
         # data 2
         data2 = models.getAnalytics2(startDate, endDate)
         df2 = pd.DataFrame(data2)
-        fig2 = px.bar(df2, x='sports', y='booking_rate')
+        fig2 = px.bar(df2, x='sports', y='booking_rate',text_auto=True, width=800, height=400, color='sports')
         graphJSON2 = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
 
         # data 2
@@ -319,7 +319,7 @@ def analytics_1(startDate='2022-01-01', endDate='2022-11-06'):
         peakDf['type'] = 'peak'
 
         df3 = pd.concat([nonPeakDf, peakDf])
-        fig3 = px.bar(df3, x='sports', y='rate', facet_col='type')
+        fig3 = px.bar(df3, x='sports', y='rate', facet_col='type',text_auto=True, width=1600, height=400, color='sports')
 
         graphJSON3 = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
 

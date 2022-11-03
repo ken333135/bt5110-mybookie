@@ -12,5 +12,5 @@ if __name__ == '__main__':
     # if (membersCount==0):
     #     utils.readDbFile("src/data.sql", models)
 
-    utils.readDbFile("src/data.sql", models)
+    utils.readDbFile("src/data_test.sql", models)
     app.run(host='0.0.0.0', debug=True, port=environ.get("PORT", 5001))
