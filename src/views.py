@@ -242,6 +242,13 @@ def add_booking():
             if request.method == 'POST':
                 user_email = session["current_user"]
                 date = booking.date.data
+
+                # check if date is after today
+                today = date.today()
+                if (date <= today):
+                    flash('Booking Date cannot be before or equal to today!')
+                    return redirect(url_for('show_booking')) 
+
                 weekend = 'Weekend' if date.weekday() < 5 else 'Weekday' 
                 holiday = 'Holiday' if models.checkIfDateIsHoliday(date) else 'Non-Holiday'
                 app.logger.info(holiday)
