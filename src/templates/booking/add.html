@@ -44,6 +44,10 @@
       table tr td {
         padding-bottom: 10px;
       }
+      th {
+        white-space: nowrap;
+        padding: 2px;
+      }
       #signout {
         width: 100px;
         height: 20px;
@@ -83,6 +87,13 @@
           </tr>
         </table>
       </form>
+    </div>
+
+    <div>
+      {% for bookingTable in bookingTableHtmls %}
+        <div>{{bookingTable[0]}}</div>
+        <div>{{bookingTable[1]|safe}}</div>
+      {% endfor %}
     </div>
   </body>
 </html>

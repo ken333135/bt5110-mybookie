@@ -275,7 +275,17 @@ def add_booking():
 
             bookings = models.getAllBookingsInNextTwoWeeks()
 
-            return render_template('booking/add.html', booking=booking, bookings=bookings)
+            data = pd.DataFrame(bookings)
+            data['value'] = 1
+
+            bookingTableHtmls = []
+
+            for facilityId in facilities:
+                app.logger.info(facilityId)
+                bookingTable = pd.pivot_table(data[data['facility_id'] == facilityId], values='value', index='date', columns='time_slot_des',fill_value="")
+                bookingTableHtmls.append([facilityId, bookingTable.to_html()])
+
+            return render_template('booking/add.html', booking=booking, bookingTableHtmls=bookingTableHtmls)
     except Exception as e:
         flash(str(e))
         return redirect(url_for('show_booking'))
