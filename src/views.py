@@ -251,7 +251,6 @@ def add_booking():
 
                 weekend = 'Weekend' if date.weekday() < 5 else 'Weekday' 
                 holiday = 'Holiday' if models.checkIfDateIsHoliday(date) else 'Non-Holiday'
-                app.logger.info(holiday)
 
                 models.addBooking({
                     "date": date.strftime('%Y-%m-%d'),
@@ -281,7 +280,6 @@ def add_booking():
             bookingTableHtmls = []
 
             for facilityId in facilities:
-                app.logger.info(facilityId)
                 bookingTable = pd.pivot_table(data[data['facility_id'] == facilityId], values='value', index='date', columns='time_slot_des',fill_value="")
                 bookingTableHtmls.append([facilityId, bookingTable.to_html()])
 
@@ -310,7 +308,6 @@ def analytics_1(startDate='2022-01-01', endDate='2022-11-06'):
 
         # data 1
         data = models.getAnalytics1(startDate, endDate)
-        app.logger.info(data)
         df = pd.DataFrame(data)
         fig = px.bar(df, x='sports', y='booking_rate', text_auto=True, width=800, height=400, color='sports')
         graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
