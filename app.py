@@ -4,6 +4,7 @@ from src.models import Models
 if __name__ == '__main__':
     from os import environ
     models = Models()
+    models.dropTables()
     models.createModels()
 
     # only do seed if db is empty
@@ -11,8 +12,6 @@ if __name__ == '__main__':
     # app.logger.info(membersCount)
     # if (membersCount==0):
     #     utils.readDbFile("src/data.sql", models)
-
-    models.dropTables()
 
     utils.readDbFile("src/data.sql", models)
 
