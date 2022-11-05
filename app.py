@@ -4,7 +4,7 @@ from src.models import Models
 if __name__ == '__main__':
     from os import environ
     models = Models()
-    models.dropTables()
+    # models.dropTables()
     models.createModels()
 
     # only do seed if db is empty
