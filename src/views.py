@@ -249,7 +249,7 @@ def add_booking():
                     flash('Booking Date cannot be before or equal to today!')
                     return redirect(url_for('show_booking')) 
 
-                weekend = 'Weekend' if date.weekday() < 5 else 'Weekday' 
+                weekend = 'Weekday' if date.weekday() < 5 else 'Weekend' 
                 holiday = 'Holiday' if models.checkIfDateIsHoliday(date) else 'Non-Holiday'
                 peakOrNonPeak = models.getPeakOrNonPeak(weekend, holiday, booking.time_slot_des.data)
                 sports = booking.facility_id.data.split("_")[0]
