@@ -73,6 +73,10 @@ class Models:
     def getAllBookingFee(self):
         return self.executeRawSql("""SELECT * FROM booking_fee;""").mappings().all()
 
+    def getFee(self, sports, date):
+        value = self.executeRawSql(""" SELECT * FROM booking_fee WHERE sports=:sports AND valid_till >=:date AND valid_from <=:date;""", { "sports": sports, "date": date }).mappings().all()
+        return value[0]
+
     """ FACILITY """
     def getAllFacility(self):
         return self.executeRawSql("""SELECT * FROM facility;""").mappings().all()
@@ -83,6 +87,10 @@ class Models:
     """ FEE_SCHEDULE """
     def getAllFeeSchedule(self):
         return self.executeRawSql("""SELECT * FROM fee_schedule;""").mappings().all()
+
+    def getPeakOrNonPeak(self,weekend, holiday, time_slot_des):
+        peakOrNonPeak = self.executeRawSql("""SELECT * FROM fee_schedule WHERE weekend=:weekend AND holiday=:holiday AND time_slot_des=:time_slot_des;""", { "weekend": weekend, "holiday": holiday, "time_slot_des": time_slot_des}).mappings().all()
+        return peakOrNonPeak[0].peak
 
     def getTimeSlotDes(self):
         return self.executeRawSql("""SELECT DISTINCT(time_slot_des) FROM fee_schedule ORDER BY time_slot_des ASC""").mappings().all()
@@ -108,7 +116,7 @@ class Models:
         return values
 
     def addBooking(self, value):
-        return self.executeRawSql("""INSERT INTO booking (date, time_slot_des, facility_id, email, weekend, holiday) VALUES(:date, :time_slot_des, :facility_id, :email, :weekend, :holiday);""", value)
+        return self.executeRawSql("""INSERT INTO booking (date, time_slot_des, facility_id, email, weekend, holiday, booking_fee) VALUES(:date, :time_slot_des, :facility_id, :email, :weekend, :holiday, :booking_fee);""", value)
 
     def deleteBooking(self, value):
         return self.executeRawSql("DELETE FROM booking where date=:date and time_slot_des=:time_slot_des and facility_id=:facility_id;", value)
@@ -300,8 +308,9 @@ class Models:
                 email TEXT NOT NULL,
                 weekend VARCHAR(8) NOT NULL,
                 holiday VARCHAR(32) NOT NULL,
+                booking_fee INT NOT NULL,
                 CONSTRAINT fk1 FOREIGN KEY (facility_id) REFERENCES facility (facility_id),
                 CONSTRAINT fk2 FOREIGN KEY (email) REFERENCES member (email),
-                PRIMARY KEY (date, time_slot_Des, facility_id)
+                PRIMARY KEY (date, time_slot_des, facility_id)
             );
             """)

@@ -251,6 +251,11 @@ def add_booking():
 
                 weekend = 'Weekend' if date.weekday() < 5 else 'Weekday' 
                 holiday = 'Holiday' if models.checkIfDateIsHoliday(date) else 'Non-Holiday'
+                peakOrNonPeak = models.getPeakOrNonPeak(weekend, holiday, booking.time_slot_des.data)
+                sports = booking.facility_id.data.split("_")[0]
+                fee = models.getFee(sports, date)
+
+                booking_fee = fee['peak_fee'] if peakOrNonPeak=='Peak' else fee['non_peak_fee'] 
 
                 models.addBooking({
                     "date": date.strftime('%Y-%m-%d'),
@@ -258,7 +263,8 @@ def add_booking():
                     "facility_id": booking.facility_id.data,
                     "email": user_email,
                     "weekend": weekend,
-                    "holiday": holiday
+                    "holiday": holiday,
+                    "booking_fee": booking_fee
                 })
                 return redirect(url_for('show_booking'))
 
@@ -274,14 +280,19 @@ def add_booking():
 
             bookings = models.getAllBookingsInNextTwoWeeks()
 
-            data = pd.DataFrame(bookings)
-            data['value'] = 1
+            data = pd.DataFrame([], columns=['facility_id'])
+
+            if (len(bookings) > 0):
+                data = pd.DataFrame(bookings)
+                data['value'] = 1
 
             bookingTableHtmls = []
 
             for facilityId in facilities:
-                bookingTable = pd.pivot_table(data[data['facility_id'] == facilityId], values='value', index='date', columns='time_slot_des',fill_value="")
-                bookingTableHtmls.append([facilityId, bookingTable.to_html()])
+                sportsBookingTable = data[data['facility_id'] == facilityId]
+                if sportsBookingTable.shape[0] > 0:
+                    bookingTable = pd.pivot_table(data[data['facility_id'] == facilityId], values='value', index='date', columns='time_slot_des',fill_value="")
+                    bookingTableHtmls.append([facilityId, bookingTable.to_html()])
 
             return render_template('booking/add.html', booking=booking, bookingTableHtmls=bookingTableHtmls)
     except Exception as e:
@@ -303,7 +314,7 @@ def delete_booking(date, time_slot_des, facility_id):
 """ ANALYTICS """
 @app.route('/admin/analytics/1')
 @app.route('/admin/analytics/1/<startDate>/<endDate>')
-def analytics_1(startDate='2022-01-01', endDate='2022-11-06'):
+def analytics_1(startDate='2022-08-01', endDate='2022-11-06'):
     try:
 
         # data 1
